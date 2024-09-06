@@ -31,6 +31,21 @@ body {
     }
 }
 
+.dancing-element {
+    animation: wiggle 2s infinite;
+    font-size: 10em;
+    font-weight: bold;
+}
+
+#color-word {
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 10em;
+    font-weight: bold;
+    animation: wiggle 2s infinite;
+}
+
 .animated-background {
     position: absolute;
     top: 0;
@@ -156,7 +171,7 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
-    animation: dance 3s infinite;
+    animation: wiggle 3s infinite;
 }
 
 .letter-image:hover {
@@ -213,4 +228,32 @@ h1 {
     border-radius: 15px;
     z-index: 1000;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.features-grid {
+    transition: all 0.3s ease;
+}
+
+.feature {
+    transition: all 0.3s ease;
+}
+
+.features-grid.letter-expanded .feature {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.features-grid.letter-expanded #letter-feature.expanded {
+    grid-column: span 2;
+    grid-row: span 2;
+    z-index: 10;
+}
+
+#letter-feature {
+    cursor: pointer;
+}
+
+#letter-feature.expanded {
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }

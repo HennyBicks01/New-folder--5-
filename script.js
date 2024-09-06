@@ -80,21 +80,6 @@ function updateWeeklyFeatures(event) {
     saveToLocalStorage(newLetter, newColor, newNumber, newShape);
 }
 
-// Update the updateDisplay function to call updateAnimatedBackground
-function updateDisplay(letter, color, number, shape) {
-    document.getElementById('letter').textContent = letter;
-    document.getElementById('color').textContent = color;
-    document.getElementById('number').textContent = number;
-    document.getElementById('shape').textContent = shape;
-    
-    document.getElementById('color-box').style.backgroundColor = color;
-    
-    updateBodyColor(color);
-    updateAnimatedBackground(color);
-    loadLetterImages(letter);
-    loadShapeImage(shape.toLowerCase());
-}
-
 // Function to save data to localStorage
 function saveToLocalStorage(letter, color, number, shape) {
     const data = {
@@ -121,9 +106,43 @@ function updateAnimatedBackground(color) {
         document.body.appendChild(animatedBackground);
     }
     
-    const lighterColor = getLighterColor(color, 0.3);
+    const lighterColor = getLighterColor(color, 0.2);
     const backgroundImage = createShapeBackground(shape, lighterColor);
     animatedBackground.style.backgroundImage = backgroundImage;
+}
+
+// Update the updateDisplay function
+function updateDisplay(letter, color, number, shape) {
+    document.getElementById('letter').textContent = letter;
+    const colorWord = document.getElementById('color-word');
+    colorWord.textContent = color;
+    colorWord.style.color = color;
+    updateColorWordShadow(color);
+    document.getElementById('number').textContent = number;
+    document.getElementById('shape').textContent = shape;
+    
+    updateBodyColor(color);
+    updateAnimatedBackground(color);
+    loadLetterImages(letter);
+    loadShapeImage(shape.toLowerCase());
+
+    const letterFeature = document.getElementById('letter-feature');
+    const featuresGrid = document.querySelector('.features-grid');
+    letterFeature.classList.remove('expanded');
+    featuresGrid.classList.remove('letter-expanded');
+    stopAudio();
+}
+
+// Update this function to use a standard black shadow
+function updateColorWordShadow(color) {
+    const colorWord = document.getElementById('color-word');
+    colorWord.style.textShadow = `
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black,
+        2px 2px 4px rgba(0,0,0,0.3)
+    `;
 }
 
 function getLighterColor(color, factor) {
@@ -256,6 +275,37 @@ function hexToRGBA(hex, alpha) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+function expandLetterFeature() {
+    const letterFeature = document.getElementById('letter-feature');
+    const featuresGrid = document.querySelector('.features-grid');
+    const letter = document.getElementById('letter').textContent;
+
+    if (letterFeature.classList.contains('expanded')) {
+        // If already expanded, revert to original state
+        letterFeature.classList.remove('expanded');
+        featuresGrid.classList.remove('letter-expanded');
+        stopAudio();
+    } else {
+        // Expand and play audio
+        letterFeature.classList.add('expanded');
+        featuresGrid.classList.add('letter-expanded');
+        playLetterAudio(letter);
+    }
+}
+
+function playLetterAudio(letter) {
+    const audio = new Audio(`file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Letter Music/${letter}.mp3`);
+    audio.play();
+}
+
+function stopAudio() {
+    const audio = document.querySelector('audio');
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+}
+
 // Load initial images and setup
 document.addEventListener('DOMContentLoaded', () => {
     populateShapesDropdown();
@@ -274,4 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const defaultShape = document.getElementById('shape').textContent;
         updateDisplay(defaultLetter, defaultColor, defaultNumber, defaultShape);
     }
+    const letterFeature = document.getElementById('letter-feature');
+    letterFeature.addEventListener('click', expandLetterFeature);
 });
