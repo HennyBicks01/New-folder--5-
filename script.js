@@ -37,6 +37,10 @@ function loadShapeImage(shape) {
     img.alt = `Shape ${shape}`;
     img.className = 'shape-image';
     shapeImageDiv.appendChild(img);
+
+    // Preload large image
+    const largeImg = new Image();
+    largeImg.src = img.src;
 }
 
 // Function to populate shapes dropdown
@@ -521,6 +525,120 @@ activitiesList.addEventListener('click', (e) => {
     }
 });
 
+function displayLargeContent(featureId) {
+    const feature = document.getElementById(featureId);
+    const contentElement = feature.querySelector('.feature-value');
+    
+    if (contentElement) {
+        contentElement.classList.add('large-content');
+    }
+    
+    if (featureId === 'shape-feature') {
+        const shapeImage = feature.querySelector('.shape-image');
+        if (shapeImage) {
+            shapeImage.classList.add('large-content');
+        }
+    }
+}
+
+function displayLargeContent(featureId) {
+    const feature = document.getElementById(featureId);
+    const contentElement = feature.querySelector('.feature-value');
+    
+    if (contentElement) {
+        contentElement.classList.add('large-content');
+    }
+    
+    if (featureId === 'shape-feature') {
+        const shapeImageDiv = document.getElementById('shape-image');
+        const currentShape = document.getElementById('shape').textContent.toLowerCase();
+        shapeImageDiv.innerHTML = ''; // Clear existing content
+        
+        const largeImg = document.createElement('img');
+        largeImg.src = `file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Shapes/${currentShape}.png`;
+        largeImg.alt = `Shape ${currentShape}`;
+        largeImg.className = 'shape-image large-content';
+        shapeImageDiv.appendChild(largeImg);
+    }
+}
+
+function resetFeatureContent(featureId) {
+    const feature = document.getElementById(featureId);
+    const contentElement = feature.querySelector('.feature-value');
+    
+    if (contentElement) {
+        contentElement.classList.remove('large-content');
+    }
+    
+    if (featureId === 'shape-feature') {
+        const shapeImageDiv = document.getElementById('shape-image');
+        const currentShape = document.getElementById('shape').textContent.toLowerCase();
+        shapeImageDiv.innerHTML = ''; // Clear existing content
+        
+        const normalImg = document.createElement('img');
+        normalImg.src = `file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Shapes/${currentShape}.png`;
+        normalImg.alt = `Shape ${currentShape}`;
+        normalImg.className = 'shape-image';
+        shapeImageDiv.appendChild(normalImg);
+    }
+}
+
+function expandFeature(featureId) {
+    const feature = document.getElementById(featureId);
+    const featuresGrid = document.querySelector('.features-grid');
+
+    if (feature.classList.contains('expanded')) {
+        // If already expanded, revert to original state
+        feature.classList.remove('expanded');
+        featuresGrid.classList.remove(`${featureId}-expanded`);
+        resetFeatureContent(featureId);
+        if (featureId === 'letter-feature') {
+            stopAudio();
+            loadLetterImages(document.getElementById('letter').textContent);
+        }
+    } else {
+        // Collapse all features first
+        document.querySelectorAll('.feature').forEach(f => {
+            f.classList.remove('expanded');
+            featuresGrid.classList.remove(`${f.id}-expanded`);
+            resetFeatureContent(f.id);
+        });
+
+        // Expand the clicked feature
+        feature.classList.add('expanded');
+        featuresGrid.classList.add(`${featureId}-expanded`);
+
+        if (featureId === 'letter-feature') {
+            const letter = document.getElementById('letter').textContent;
+            playLetterAudio(letter);
+            displayLargeLetterImages(letter);
+        } else {
+            displayLargeContent(featureId);
+        }
+    }
+}
+
+function displayLargeContent(featureId) {
+    const feature = document.getElementById(featureId);
+    const contentElement = feature.querySelector('.feature-value');
+    
+    if (contentElement) {
+        contentElement.classList.add('large-content');
+    }
+    
+    if (featureId === 'shape-feature') {
+        const shapeImage = feature.querySelector('.shape-image');
+        if (shapeImage) {
+            shapeImage.classList.add('large-content');
+        }
+    }
+}
+
+// Update the existing expandLetterFeature function to use the new expandFeature function
+function expandLetterFeature() {
+    expandFeature('letter-feature');
+}
+
 
 // Load initial images and setup
 document.addEventListener('DOMContentLoaded', () => {
@@ -540,8 +658,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const defaultShape = document.getElementById('shape').textContent;
         updateDisplay(defaultLetter, defaultColor, defaultNumber, defaultShape);
     }
+
     const letterFeature = document.getElementById('letter-feature');
-    letterFeature.addEventListener('click', expandLetterFeature);
+    letterFeature.addEventListener('click', () => expandFeature('letter-feature'));
+
+    const numberFeature = document.getElementById('number-feature');
+    numberFeature.addEventListener('click', () => expandFeature('number-feature'));
+
+    const colorFeature = document.getElementById('color-feature');
+    colorFeature.addEventListener('click', () => expandFeature('color-feature'));
+
+    const shapeFeature = document.getElementById('shape-feature');
+    shapeFeature.addEventListener('click', () => expandFeature('shape-feature'));
 
     // Add click event listener to the letter image to stop audio and collapse
     document.getElementById('letter-images').addEventListener('click', (event) => {
