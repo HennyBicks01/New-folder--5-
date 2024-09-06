@@ -93,27 +93,72 @@ function updateAnimatedBackground(color) {
     animatedBackground.style.backgroundImage = backgroundImage;
 }
 
+function isColorLight(color) {
+    const rgb = getRGBValues(color);
+    const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+    return brightness > 128;
+}
+
+function getRGBValues(color) {
+    if (color.startsWith('rgb')) {
+        return {
+            r: parseInt(color.match(/\d+/g)[0]),
+            g: parseInt(color.match(/\d+/g)[1]),
+            b: parseInt(color.match(/\d+/g)[2])
+        };
+    } else if (color.startsWith('#')) {
+        return {
+            r: parseInt(color.slice(1, 3), 16),
+            g: parseInt(color.slice(3, 5), 16),
+            b: parseInt(color.slice(5, 7), 16)
+        };
+    } else {
+        const tempElement = document.createElement('div');
+        tempElement.style.color = color;
+        document.body.appendChild(tempElement);
+        const rgbColor = getComputedStyle(tempElement).color;
+        document.body.removeChild(tempElement);
+        return getRGBValues(rgbColor);
+    }
+}
+
+function getContrastColor(color) {
+    return isColorLight(color) ? getDarkerColor(color, 0.6) : getLighterColor(color, 0.6);
+}
+
+function getDarkerColor(color, factor) {
+    const rgb = getRGBValues(color);
+    return `rgb(${Math.max(0, Math.round(rgb.r * (1 - factor)))}, ${Math.max(0, Math.round(rgb.g * (1 - factor)))}, ${Math.max(0, Math.round(rgb.b * (1 - factor)))})`;
+}
+
 // Update the updateDisplay function
 function updateDisplay(letter, color, number, shape) {
     document.getElementById('letter').textContent = letter;
     const colorWord = document.getElementById('color-word');
     colorWord.textContent = color;
     colorWord.style.color = color;
-    updateColorWordShadow(color);
+    
+    const contrastColor = getContrastColor(color);
+    
+    // Update text colors
+    document.body.style.color = contrastColor;
+    document.querySelector('h1').style.color = contrastColor;
+    document.querySelectorAll('.feature h2').forEach(h2 => h2.style.color = contrastColor);
     
     // Update number display
     const numberWord = document.getElementById('number-word');
     numberWord.textContent = number;
     numberWord.style.color = color;
-    updateColorWordShadow(color, numberWord);
     
     document.getElementById('shape').textContent = shape;
     document.querySelector('.sidebar').style.backgroundColor = color;
+    document.querySelector('.sidebar').style.color = contrastColor;
     
     updateBodyColor(color);
     updateAnimatedBackground(color);
     loadLetterImages(letter);
     loadShapeImage(shape.toLowerCase());
+    updateColorWordShadow(color);
 
     const letterFeature = document.getElementById('letter-feature');
     const featuresGrid = document.querySelector('.features-grid');
@@ -122,15 +167,22 @@ function updateDisplay(letter, color, number, shape) {
     stopAudio();
 }
 
-// Update this function to accept an optional element parameter
-function updateColorWordShadow(color, element = document.getElementById('color-word')) {
-    element.style.textShadow = `
-        -1px -1px 0 black,
-        1px -1px 0 black,
-        -1px 1px 0 black,
-        1px 1px 0 black,
-        2px 2px 4px rgba(0,0,0,0.3)
+// Update the updateColorWordShadow function
+function updateColorWordShadow(color) {
+    const shadowColor = isColorLight(color) ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)';
+    const style = `
+        -1px -1px 0 ${shadowColor},
+        1px -1px 0 ${shadowColor},
+        -1px 1px 0 ${shadowColor},
+        1px 1px 0 ${shadowColor},
+        2px 2px 4px ${shadowColor}
     `;
+
+    const colorWord = document.getElementById('color-word');
+    const numberWord = document.getElementById('number-word');
+
+    colorWord.style.textShadow = style;
+    numberWord.style.textShadow = style;
 }
 
 function getLighterColor(color, factor) {
@@ -335,23 +387,30 @@ const editActivitiesButton = document.getElementById('editActivities');
 const activityControls = document.querySelector('.activity-controls');
 let isEditingActivities = false;
 
+// Update the toggleEditActivities function
 function toggleEditActivities() {
     isEditingActivities = !isEditingActivities;
     activityControls.style.display = isEditingActivities ? 'flex' : 'none';
     activitiesList.classList.toggle('editing', isEditingActivities);
     
+    const color = document.getElementById('color-word').textContent;
+    const contrastColor = getContrastColor(color);
+    
     if (isEditingActivities) {
         editActivitiesButton.innerHTML = '<i class="fas fa-check"></i>';
         activitiesList.querySelectorAll('.activity-item').forEach(item => {
             item.style.cursor = 'pointer';
+            item.style.color = contrastColor;
         });
     } else {
         editActivitiesButton.innerHTML = '<i class="fas fa-pencil-alt"></i>';
         activitiesList.querySelectorAll('.activity-item').forEach(item => {
             item.style.cursor = 'move';
+            item.style.color = contrastColor;
         });
     }
 }
+
 let activities = [
     'Letter tracing',
     'Color mixing',
