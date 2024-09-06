@@ -49,24 +49,34 @@
     </div>
 
     <button id="editButton" class="edit-button"><i class="fas fa-edit"></i></button>
-
+    
     <div id="editForm" class="edit-form" style="display: none;">
         <h2>Edit Weekly Features</h2>
         <form id="weeklyFeatures" hx-post="/update-features" hx-target="body">
-            <label for="newLetter">Letter:</label>
-            <input type="text" id="newLetter" name="newLetter" required><br><br>
+            <div class="form-group">
+                <label for="newLetter">Letter:</label>
+                <input type="text" id="newLetter" name="newLetter" required>
+            </div>
             
-            <label for="newColor">Color:</label>
-            <input type="text" id="newColor" name="newColor" required><br><br>
+            <div class="form-group">
+                <label for="newColor">Color:</label>
+                <input type="text" id="newColor" name="newColor" required>
+            </div>
             
-            <label for="newNumber">Number:</label>
-            <input type="number" id="newNumber" name="newNumber" required><br><br>
+            <div class="form-group">
+                <label for="newNumber">Number:</label>
+                <input type="number" id="newNumber" name="newNumber" required>
+            </div>
             
-<label for="newShape">Shape:</label>
-<select id="newShape" name="newShape" required></select><br><br>
+            <div class="form-group">
+                <label for="newShape">Shape:</label>
+                <select id="newShape" name="newShape" required></select>
+            </div>
             
-            <button type="submit">Update</button>
-            <button type="button" id="cancelEdit">Cancel</button>
+            <div class="form-actions">
+                <button type="submit">Update</button>
+                <button type="button" id="cancelEdit">Cancel</button>
+            </div>
         </form>
     </div>
 

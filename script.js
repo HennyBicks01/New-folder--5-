@@ -3,6 +3,20 @@ const editForm = document.getElementById('editForm');
 const cancelEdit = document.getElementById('cancelEdit');
 const weeklyFeaturesForm = document.getElementById('weeklyFeatures');
 
+// Add this function near the top of your script, after the initial variable declarations
+function populateFormWithCurrentValues() {
+    const currentLetter = document.getElementById('letter').textContent;
+    const currentColor = document.getElementById('color-word').textContent;
+    const currentNumber = document.getElementById('number-word').textContent;
+    const currentShape = document.getElementById('shape').textContent;
+
+    document.getElementById('newLetter').value = currentLetter;
+    document.getElementById('newColor').value = currentColor;
+    document.getElementById('newNumber').value = currentNumber;
+    document.getElementById('newShape').value = currentShape.toLowerCase();
+}
+
+// Update the edit button click event listener
 editButton.addEventListener('click', () => {
     editForm.style.display = 'block';
     populateFormWithCurrentValues();
