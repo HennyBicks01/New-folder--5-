@@ -9,6 +9,15 @@
     75% { transform: rotate(5deg); }
 }
 
+@keyframes moveShapes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100px 100px;
+    }
+}
+
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
     margin: 0;
@@ -22,17 +31,8 @@ body {
     overflow: hidden;
 }
 
-@keyframes moveShapes {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 100px 100px;
-    }
-}
-
 .dancing-element {
-    animation: wiggle 2s infinite;
+    animation: wiggle 3s infinite;
     font-size: 10em;
     font-weight: bold;
 }
@@ -68,13 +68,14 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
     font-size: 3em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     animation: dance 2s infinite;
 }
 
 .sidebar h2 {
     margin-top: 0;
     margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -118,7 +119,7 @@ h1 {
 
 .feature h2 {
     margin-top: 0;
-    color: #ff6b6b;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     font-size: 1.5em;
 }
 
@@ -129,8 +130,11 @@ h1 {
     flex-direction: column;
     border-radius: 15px;
     max-width: 250px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: background-color 0.5s ease;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Harsher shadow */
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 
@@ -187,7 +191,7 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
-    animation: wiggle 4s infinite;
+    animation: wiggle 3s infinite;
 }
 
 .shape-image:hover {
@@ -314,7 +318,7 @@ h1 {
 }
 
 .activity-item {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
@@ -324,12 +328,12 @@ h1 {
     width: 90%;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color 0.3s ease;
-
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .activity-item:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
 }
 
 .edit-activities-button {

@@ -37,13 +37,6 @@ function populateShapesDropdown() {
     });
 }
 
-// New function to populate the form with current values
-function populateFormWithCurrentValues() {
-    document.getElementById('newLetter').value = document.getElementById('letter').textContent;
-    document.getElementById('newColor').value = document.getElementById('color').textContent;
-    document.getElementById('newNumber').value = document.getElementById('number').textContent;
-    document.getElementById('newShape').value = document.getElementById('shape').textContent.toLowerCase();
-}
 
 // Function to update weekly features
 function updateWeeklyFeatures(event) {
@@ -169,7 +162,7 @@ function updateDisplay(letter, color, number, shape) {
 
 // Update the updateColorWordShadow function
 function updateColorWordShadow(color) {
-    const shadowColor = isColorLight(color) ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.2)';
+    const shadowColor = isColorLight(color) ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)';
     const style = `
         -1px -1px 0 ${shadowColor},
         1px -1px 0 ${shadowColor},
