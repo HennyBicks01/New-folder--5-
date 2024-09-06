@@ -169,9 +169,10 @@ body {
 }
 
 .feature h2 {
-    margin-top: 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin-top: -3vh;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     font-size: 1.5em;
+    padding-bottom: 1.5vh;
 }
 
 .sidebar {

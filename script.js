@@ -425,13 +425,6 @@ function toggleEditActivities() {
     }
 }
 
-let activities = [
-    'Letter tracing',
-    'Color mixing',
-    'Counting games',
-    'Shape drawing'
-];
-
 
 function renderActivities() {
     activitiesList.innerHTML = '';
