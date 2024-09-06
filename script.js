@@ -12,24 +12,6 @@ cancelEdit.addEventListener('click', () => {
     editForm.style.display = 'none';
 });
 
-// Function to load letter images
-function loadLetterImages(letter) {
-    const letterImagesDiv = document.getElementById('letter-images');
-    letterImagesDiv.innerHTML = '';
-    
-    // We'll try loading up to 5 images for each letter
-    for (let i = 1; i <= 5; i++) {
-        const img = document.createElement('img');
-        img.src = `file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Letters/${letter}${i}.png`;
-        img.alt = `Letter ${letter} - Image ${i}`;
-        img.className = 'letter-image';
-        
-        // Only append the image if it loads successfully
-        img.onload = () => letterImagesDiv.appendChild(img);
-        img.onerror = () => img.remove(); // Remove the img element if the file doesn't exist
-    }
-}
-
 // Function to load shape image
 function loadShapeImage(shape) {
     const shapeImageDiv = document.getElementById('shape-image');
@@ -279,30 +261,63 @@ function expandLetterFeature() {
     const letterFeature = document.getElementById('letter-feature');
     const featuresGrid = document.querySelector('.features-grid');
     const letter = document.getElementById('letter').textContent;
+    const letterImages = document.getElementById('letter-images');
 
     if (letterFeature.classList.contains('expanded')) {
         // If already expanded, revert to original state
         letterFeature.classList.remove('expanded');
         featuresGrid.classList.remove('letter-expanded');
         stopAudio();
+        loadLetterImages(letter); // Reload all letter images
     } else {
         // Expand and play audio
         letterFeature.classList.add('expanded');
         featuresGrid.classList.add('letter-expanded');
         playLetterAudio(letter);
+        
+        // Display only the first image at a larger size
+        const firstImage = letterImages.querySelector('img');
+        if (firstImage) {
+            letterImages.innerHTML = '';
+            const largeImage = firstImage.cloneNode(true);
+            largeImage.style.maxHeight = '70vh';
+            largeImage.style.width = 'auto';
+            letterImages.appendChild(largeImage);
+        }
+    }
+}
+
+function loadLetterImages(letter) {
+    const letterImagesDiv = document.getElementById('letter-images');
+    letterImagesDiv.innerHTML = '';
+    
+    // We'll try loading up to 5 images for each letter
+    for (let i = 1; i <= 5; i++) {
+        const img = document.createElement('img');
+        img.src = `file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Letters/${letter}${i}.png`;
+        img.alt = `Letter ${letter} - Image ${i}`;
+        img.className = 'letter-image';
+        
+        // Only append the image if it loads successfully
+        img.onload = () => letterImagesDiv.appendChild(img);
+        img.onerror = () => img.remove(); // Remove the img element if the file doesn't exist
     }
 }
 
 function playLetterAudio(letter) {
+    stopAudio(); // Stop any currently playing audio
     const audio = new Audio(`file:///${window.location.pathname.split('/').slice(0, -1).join('/')}/Letter Music/${letter}.mp3`);
+    audio.id = 'letterAudio';
+    document.body.appendChild(audio);
     audio.play();
 }
 
 function stopAudio() {
-    const audio = document.querySelector('audio');
+    const audio = document.getElementById('letterAudio');
     if (audio) {
         audio.pause();
         audio.currentTime = 0;
+        audio.remove();
     }
 }
 
@@ -326,4 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const letterFeature = document.getElementById('letter-feature');
     letterFeature.addEventListener('click', expandLetterFeature);
+
+    // Add click event listener to the letter image to stop audio and collapse
+    document.getElementById('letter-images').addEventListener('click', (event) => {
+        if (event.target.tagName === 'IMG' && letterFeature.classList.contains('expanded')) {
+            expandLetterFeature();
+        }
+    });
 });
