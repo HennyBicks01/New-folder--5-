@@ -20,26 +20,28 @@
                         <div id="letter-images"></div>
                     </div>
                     <div class="feature">
-                        <h2>Color of the Week:</h2>
+                        <h2>Number of the Week:</h2>
+                        <div id="number-word" class="dancing-element"></div>
+                    </div>
+                    <div class="feature">
+                        <h2>Color of the Month:</h2>
                         <div id="color-word" class="dancing-element"></div>
                     </div>
                     <div class="feature">
-                        <h2>Number of the Week: <span id="number">7</span></h2>
-                    </div>
-                    <div class="feature">
-                        <h2>Shape of the Week: <span id="shape">Circle</span></h2>
+                        <h2>Shape of the Month <span id="shape"></span></h2>
                         <div id="shape-image"></div>
                     </div>
                 </div>
             </div>
             <div class="sidebar">
-                <h2>Today's Activities</h2>
-                <ul id="activities">
-                    <li>Letter tracing</li>
-                    <li>Color mixing</li>
-                    <li>Counting games</li>
-                    <li>Shape drawing</li>
+                <h2>Today's Activities <button id="editActivities" class="edit-activities-button"><i class="fas fa-pencil-alt"></i></button></h2>
+                <ul id="activities" class="activities-list">
+                    <!-- Activities will be dynamically added here -->
                 </ul>
+                <div class="activity-controls" style="display: none;">
+                    <input type="text" id="newActivity" placeholder="New activity">
+                    <button id="addActivity">Add</button>
+                </div>
             </div>
         </div>
     </div>

@@ -100,8 +100,15 @@ function updateDisplay(letter, color, number, shape) {
     colorWord.textContent = color;
     colorWord.style.color = color;
     updateColorWordShadow(color);
-    document.getElementById('number').textContent = number;
+    
+    // Update number display
+    const numberWord = document.getElementById('number-word');
+    numberWord.textContent = number;
+    numberWord.style.color = color;
+    updateColorWordShadow(color, numberWord);
+    
     document.getElementById('shape').textContent = shape;
+    document.querySelector('.sidebar').style.backgroundColor = color;
     
     updateBodyColor(color);
     updateAnimatedBackground(color);
@@ -115,10 +122,9 @@ function updateDisplay(letter, color, number, shape) {
     stopAudio();
 }
 
-// Update this function to use a standard black shadow
-function updateColorWordShadow(color) {
-    const colorWord = document.getElementById('color-word');
-    colorWord.style.textShadow = `
+// Update this function to accept an optional element parameter
+function updateColorWordShadow(color, element = document.getElementById('color-word')) {
+    element.style.textShadow = `
         -1px -1px 0 black,
         1px -1px 0 black,
         -1px 1px 0 black,
@@ -321,6 +327,133 @@ function stopAudio() {
     }
 }
 
+// Activities management
+const activitiesList = document.getElementById('activities');
+const newActivityInput = document.getElementById('newActivity');
+const addActivityButton = document.getElementById('addActivity');
+const editActivitiesButton = document.getElementById('editActivities');
+const activityControls = document.querySelector('.activity-controls');
+let isEditingActivities = false;
+
+function toggleEditActivities() {
+    isEditingActivities = !isEditingActivities;
+    activityControls.style.display = isEditingActivities ? 'flex' : 'none';
+    activitiesList.classList.toggle('editing', isEditingActivities);
+    
+    if (isEditingActivities) {
+        editActivitiesButton.innerHTML = '<i class="fas fa-check"></i>';
+        activitiesList.querySelectorAll('.activity-item').forEach(item => {
+            item.style.cursor = 'pointer';
+        });
+    } else {
+        editActivitiesButton.innerHTML = '<i class="fas fa-pencil-alt"></i>';
+        activitiesList.querySelectorAll('.activity-item').forEach(item => {
+            item.style.cursor = 'move';
+        });
+    }
+}
+let activities = [
+    'Letter tracing',
+    'Color mixing',
+    'Counting games',
+    'Shape drawing'
+];
+
+
+function renderActivities() {
+    activitiesList.innerHTML = '';
+    activities.forEach((activity, index) => {
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.draggable = true;
+        li.textContent = activity;
+        li.addEventListener('dragstart', dragStart);
+        li.addEventListener('dragover', dragOver);
+        li.addEventListener('drop', drop);
+        li.addEventListener('dragenter', dragEnter);
+        li.addEventListener('dragleave', dragLeave);
+        activitiesList.appendChild(li);
+    });
+}
+
+
+
+function addActivity() {
+    const newActivity = newActivityInput.value.trim();
+    if (newActivity) {
+        activities.push(newActivity);
+        newActivityInput.value = '';
+        renderActivities();
+        saveActivities();
+    }
+}
+
+// Add this event listener for the Add button
+addActivityButton.addEventListener('click', addActivity);
+
+function deleteActivity(index) {
+    activities.splice(index, 1);
+    renderActivities();
+    saveActivities();
+}
+
+function saveActivities() {
+    localStorage.setItem('activities', JSON.stringify(activities));
+}
+
+function loadActivities() {
+    const savedActivities = localStorage.getItem('activities');
+    if (savedActivities) {
+        activities = JSON.parse(savedActivities);
+    }
+    renderActivities();
+}
+
+let draggedItem = null;
+
+function dragStart() {
+    draggedItem = this;
+    setTimeout(() => this.classList.add('dragging'), 0);
+}
+
+function dragOver(e) {
+    e.preventDefault();
+}
+
+function drop() {
+    this.classList.remove('over');
+    const fromIndex = Array.from(activitiesList.children).indexOf(draggedItem);
+    const toIndex = Array.from(activitiesList.children).indexOf(this);
+    if (fromIndex !== toIndex) {
+        const item = activities[fromIndex];
+        activities.splice(fromIndex, 1);
+        activities.splice(toIndex, 0, item);
+        renderActivities();
+        saveActivities();
+    }
+}
+
+function dragEnter(e) {
+    e.preventDefault();
+    this.classList.add('over');
+}
+
+function dragLeave() {
+    this.classList.remove('over');
+}
+
+// Add this event listener
+editActivitiesButton.addEventListener('click', toggleEditActivities);
+
+// Update the existing event listener for deleting activities
+activitiesList.addEventListener('click', (e) => {
+    if (isEditingActivities && e.target.classList.contains('activity-item')) {
+        const index = Array.from(activitiesList.children).indexOf(e.target);
+        deleteActivity(index);
+    }
+});
+
+
 // Load initial images and setup
 document.addEventListener('DOMContentLoaded', () => {
     populateShapesDropdown();
@@ -346,6 +479,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('letter-images').addEventListener('click', (event) => {
         if (event.target.tagName === 'IMG' && letterFeature.classList.contains('expanded')) {
             expandLetterFeature();
+        }
+    });
+
+    loadActivities();
+    renderActivities();
+
+    // Add these lines to ensure all buttons are properly initialized
+    editActivitiesButton.addEventListener('click', toggleEditActivities);
+    addActivityButton.addEventListener('click', addActivity);
+
+    // Optional: Add enter key support for adding activities
+    newActivityInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addActivity();
         }
     });
 });
