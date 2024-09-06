@@ -18,6 +18,42 @@
     }
 }
 
+@keyframes wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 4em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    letter-spacing: -13px;
+    padding: 10px 0;
+}
+
+h1 span {
+    display: inline-block;
+    animation: wave 3s ease-in-out infinite;
+}
+
+h1 span:nth-child(2) { animation-delay: 0.1s; }
+h1 span:nth-child(3) { animation-delay: 0.2s; }
+h1 span:nth-child(4) { animation-delay: 0.3s; }
+h1 span:nth-child(5) { animation-delay: 0.4s; }
+h1 span:nth-child(6) { animation-delay: 0.5s; }
+h1 span:nth-child(7) { animation-delay: 0.6s; }
+h1 span:nth-child(8) { animation-delay: 0.7s; }
+h1 span:nth-child(9) { animation-delay: 0.8s; }
+h1 span:nth-child(10) { animation-delay: 0.9s; }
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
     margin: 0;
@@ -57,20 +93,11 @@ body {
     animation: moveShapes 10s linear infinite;
 }
 
-.container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
+@keyframes wave2 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 3em;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    animation: dance 2s infinite;
-}
 
 .sidebar h2 {
     margin-top: 0;
@@ -78,8 +105,32 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     display: flex;
     justify-content: space-between;
+    margin-left: -5px;
     align-items: center;
 }
+
+.sidebar h2 span {
+    display: inline-block;
+    animation: wave2 3s ease-in-out infinite;
+}
+
+.sidebar h2 span:nth-child(2) { animation-delay: 0.1s; }
+.sidebar h2 span:nth-child(3) { animation-delay: 0.2s; }
+.sidebar h2 span:nth-child(4) { animation-delay: 0.3s; }
+.sidebar h2 span:nth-child(5) { animation-delay: 0.4s; }
+.sidebar h2 span:nth-child(6) { animation-delay: 0.5s; }
+.sidebar h2 span:nth-child(7) { animation-delay: 0.6s; }
+.sidebar h2 span:nth-child(8) { animation-delay: 0.7s; }
+.sidebar h2 span:nth-child(9) { animation-delay: 0.8s; }
+.sidebar h2 span:nth-child(10) { animation-delay: 0.9s; }
+.sidebar h2 span:nth-child(11) { animation-delay: 1.0s; }
+.sidebar h2 span:nth-child(12) { animation-delay: 1.1s; }
+.sidebar h2 span:nth-child(13) { animation-delay: 1.2s; }
+.sidebar h2 span:nth-child(14) { animation-delay: 1.3s; }
+.sidebar h2 span:nth-child(15) { animation-delay: 1.4s; }
+.sidebar h2 span:nth-child(16) { animation-delay: 1.5s; }
+.sidebar h2 span:nth-child(17) { animation-delay: 1.6s; }
+.sidebar h2 span:nth-child(18) { animation-delay: 1.7s; }
 
 .content {
     display: flex;
@@ -127,6 +178,7 @@ h1 {
     flex: 1;
     padding: 20px;
     display: flex;
+    margin: 15px;
     flex-direction: column;
     border-radius: 15px;
     max-width: 250px;
@@ -138,7 +190,6 @@ h1 {
 
 
 #activities {
-    padding-left: 20px;
     margin: 0;
 }
 
@@ -201,22 +252,20 @@ h1 {
     position: fixed;
     top: 20px;
     right: 20px;
-    color: white;
+    background: none;
     border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-size: 24px;
+    padding: 10px;
+    transition: transform 0.3s ease;
 }
 
 .edit-button:hover {
     transform: scale(1.1);
+}
+
+.edit-button i {
+    transition: color 0.3s ease;
 }
 
 .edit-form {
@@ -425,11 +474,6 @@ h1 {
 }
 
 .edit-activities-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8em;
-    padding: 0;
     transition: transform 0.3s ease;
 }
 
@@ -469,10 +513,10 @@ h1 {
 .edit-activities-button {
     background: none;
     border: none;
-    color: #ff6b6b;
     cursor: pointer;
     font-size: 0.8em;
-    padding: 0;
+    padding-left: 12px;
+    margin-right: -10px;
 }
 
 .edit-activities-button:hover {

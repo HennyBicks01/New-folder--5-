@@ -163,11 +163,12 @@ function updateDisplay(letter, color, number, shape) {
     numberWord.style.color = color;
     
     document.getElementById('shape').textContent = shape;
-    document.querySelector('.sidebar').style.backgroundColor = color;
-    document.querySelector('.sidebar').style.color = contrastColor;
-    document.querySelector('.edit-activities-button').style.color = contrastColor;
+    document.querySelector('.sidebar').style.backgroundColor = contrastColor;
+    document.querySelector('.sidebar').style.color = color;
+    document.querySelector('.edit-activities-button').style.color = color;
     document.querySelector('.edit-button').style.color = contrastColor;
-    
+    document.querySelector('.edit-button i').style.color = contrastColor;
+
     updateBodyColor(color);
     updateAnimatedBackground(color);
     loadLetterImages(letter);
