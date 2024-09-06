@@ -161,6 +161,8 @@ function updateDisplay(letter, color, number, shape) {
     document.getElementById('shape').textContent = shape;
     document.querySelector('.sidebar').style.backgroundColor = color;
     document.querySelector('.sidebar').style.color = contrastColor;
+    document.querySelector('.edit-activities-button').style.color = contrastColor;
+    document.querySelector('.edit-button').style.color = contrastColor;
     
     updateBodyColor(color);
     updateAnimatedBackground(color);
@@ -174,7 +176,6 @@ function updateDisplay(letter, color, number, shape) {
     featuresGrid.classList.remove('letter-expanded');
     stopAudio();
 }
-
 // Update the updateColorWordShadow function
 function updateColorWordShadow(color) {
     const shadowColor = isColorLight(color) ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.6)';
@@ -403,9 +404,6 @@ function toggleEditActivities() {
     isEditingActivities = !isEditingActivities;
     activityControls.style.display = isEditingActivities ? 'flex' : 'none';
     activitiesList.classList.toggle('editing', isEditingActivities);
-    
-    const color = document.getElementById('color-word').textContent;
-    const contrastColor = getContrastColor(color);
     
     if (isEditingActivities) {
         editActivitiesButton.innerHTML = '<i class="fas fa-check"></i>';

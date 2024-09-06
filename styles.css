@@ -130,11 +130,10 @@ h1 {
     flex-direction: column;
     border-radius: 15px;
     max-width: 250px;
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
     backdrop-filter: blur(10px); /* Blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Harsher shadow */
     transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    opacity: 0.9;
 }
 
 
@@ -145,8 +144,9 @@ h1 {
 
 #activities li {
     margin-bottom: 10px;
-    color: #6c5ce7;
     font-size: 1.1em;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 #color-box {
@@ -202,7 +202,6 @@ h1 {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #ff6b6b;
     color: white;
     border: none;
     border-radius: 50%;
@@ -219,7 +218,6 @@ h1 {
 
 .edit-button:hover {
     transform: scale(1.1);
-    background-color: #ff8787;
 }
 
 .edit-form {
@@ -365,14 +363,14 @@ h1 {
 .edit-activities-button {
     background: none;
     border: none;
-    color: #ff6b6b;
     cursor: pointer;
     font-size: 0.8em;
     padding: 0;
+    transition: transform 0.3s ease;
 }
 
 .edit-activities-button:hover {
-    color: #ff8787;
+    transform: scale(1.1);
 }
 
 .activities-list {
@@ -392,6 +390,7 @@ h1 {
     margin-bottom: 10px;
     cursor: move;
     text-align: center;
+    color: #333;
     width: 90%;
     font-size: 1em;
     font-weight: bold;
