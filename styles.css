@@ -18,6 +18,28 @@ body {
     flex-direction: column;
     background-color: #f0f8ff;
     transition: background-color 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes moveShapes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100px 100px;
+    }
+}
+
+.animated-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-size: 100px 100px;
+    animation: moveShapes 10s linear infinite;
 }
 
 .container {
@@ -57,15 +79,14 @@ h1 {
 }
 
 .feature {
-    border: 3px solid #4ecdc4;
     padding: 20px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: transparent;
+    box-shadow: none;
     transition: transform 0.3s ease;
 }
 
