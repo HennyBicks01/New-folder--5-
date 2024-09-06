@@ -3,6 +3,7 @@ const editForm = document.getElementById('editForm');
 const cancelEdit = document.getElementById('cancelEdit');
 const weeklyFeaturesForm = document.getElementById('weeklyFeatures');
 
+
 // Add this function near the top of your script, after the initial variable declarations
 function populateFormWithCurrentValues() {
     const currentLetter = document.getElementById('letter').textContent;
@@ -340,14 +341,17 @@ function expandLetterFeature() {
         featuresGrid.classList.add('letter-expanded');
         playLetterAudio(letter);
         
-        // Display only the first image at a larger size
-        const firstImage = letterImages.querySelector('img');
-        if (firstImage) {
+        // Display all images at a larger size
+        const images = letterImages.querySelectorAll('img');
+        if (images.length > 0) {
             letterImages.innerHTML = '';
-            const largeImage = firstImage.cloneNode(true);
-            largeImage.style.maxHeight = '70vh';
-            largeImage.style.width = 'auto';
-            letterImages.appendChild(largeImage);
+            images.forEach(img => {
+                const largeImage = img.cloneNode(true);
+                largeImage.style.maxHeight = '65vh';
+                largeImage.style.width = 'auto';
+                largeImage.style.margin = '10px'; // Add some margin between images
+                letterImages.appendChild(largeImage);
+            });
         }
     }
 }
